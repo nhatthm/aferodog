@@ -41,6 +41,7 @@ func (m *Manager) RegisterContext(td TempDirer, ctx *godog.ScenarioContext) {
 
 	ctx.AfterScenario(func(*godog.Scenario, error) {
 		m.cleanup()
+		_ = m.resetDir() // nolint: errcheck
 	})
 
 	// Utils.
