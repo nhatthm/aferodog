@@ -26,6 +26,14 @@ Feature: OS FS
         And directory "test" permission should be 0755
         And file "test/file2.sh" permission should be 0755
 
+    Scenario: Regexp Assertions
+        And there should be a file "test/file2.sh" with content matches:
+        """
+        #!/usr/bin/env bash
+
+        echo "<regexp:[^"]+/>"
+        """
+
     Scenario: Tree Contains
         And there should be these files:
         """

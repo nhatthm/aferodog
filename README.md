@@ -262,6 +262,8 @@ Feature: Mixed
 
 ### Assert file content
 
+#### Plain Text
+
 Pattern:
 
 - With the default fs: `^there should be a file "([^"]+)" with content:`
@@ -283,6 +285,32 @@ Feature: Mixed
         #!/usr/bin/env bash
 
         echo "hello"
+        """
+```
+
+#### Regexp
+
+Pattern:
+
+- With the default fs: `^there should be a file "([^"]+)" with content matches:`
+- With a fs at your choice: `^there should be a file "([^"]+)" in "([^"]+)" (?:fs|filesystem|file system) with content matches:`
+
+```gherkin
+Feature: Mixed
+
+    Background:
+        Given there should be a file "test/file2.sh" with content matches:
+        """
+        #!/usr/bin/env bash
+
+        echo "<regexp:[^"]+/>"
+        """
+
+        And there should be a file "test/file2.sh" in "mem" fs with content matches:
+        """
+        #!/usr/bin/env bash
+
+        echo "<regexp:[^"]+/>"
         """
 ```
 

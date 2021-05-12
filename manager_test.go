@@ -590,6 +590,79 @@ func TestManager_AssertFileContent(t *testing.T) {
 	}
 }
 
+func TestManager_AssertFileContentRegexp(t *testing.T) {
+	t.Parallel()
+
+	testCases := []struct {
+		scenario      string
+		mockFs        aferomock.FsMocker
+		expectedError bool
+	}{
+		{
+			scenario: "stat error",
+			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
+				fs.On("Stat", "level1/file.txt").
+					Return(nil, errors.New("stat error"))
+			}),
+			expectedError: true,
+		},
+		{
+			scenario: "file not found",
+			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
+				fs.On("Stat", "level1/file.txt").
+					Return(nil, os.ErrNotExist)
+			}),
+			expectedError: true,
+		},
+		{
+			scenario: "different content",
+			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
+				fs.On("Stat", "level1/file.txt").
+					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
+						i.On("IsDir").Return(false)
+					}), nil)
+
+				fs.On("Open", "level1/file.txt").
+					Return(mem.NewFileHandle(mem.CreateFile("file.txt")), nil)
+			}),
+			expectedError: true,
+		},
+		{
+			scenario: "success",
+			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
+				fs.On("Stat", "level1/file.txt").
+					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
+						i.On("IsDir").Return(false)
+					}), nil)
+
+				f := mem.NewFileHandle(mem.CreateFile("file.txt"))
+				_, _ = f.WriteString("hello world") // nolint: errcheck
+				_, _ = f.Seek(0, io.SeekStart)      // nolint: errcheck
+
+				fs.On("Open", "level1/file.txt").
+					Return(f, nil)
+			}),
+		},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.scenario, func(t *testing.T) {
+			t.Parallel()
+
+			m := newManager(t, tc.mockFs)
+			err := m.assertFileContentRegexp("level1/file.txt", &godog.DocString{Content: "hello <regexp:[a-z]+/>"})
+
+			if tc.expectedError {
+				t.Log(err)
+				assert.Error(t, err)
+			} else {
+				assert.NoError(t, err)
+			}
+		})
+	}
+}
+
 func TestManager_AssertFilePerm(t *testing.T) {
 	t.Parallel()
 

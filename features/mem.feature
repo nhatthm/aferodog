@@ -25,6 +25,14 @@ Feature: Memory FS
         And directory "test" permission in "mem" fs should be 0755
         And file "test/file2.sh" permission in "mem" fs should be 0755
 
+    Scenario: Regexp Assertions
+        And there should be a file "test/file2.sh" in "mem" fs with content matches:
+        """
+        #!/usr/bin/env bash
+
+        echo "<regexp:[^"]+/>"
+        """
+
     Scenario: Tree Contains
         Then there should be these files in "mem" fs:
         """

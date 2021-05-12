@@ -59,6 +59,7 @@ func (m *Manager) RegisterContext(td TempDirer, ctx *godog.ScenarioContext) {
 	ctx.Step(`^there should be a file "([^"]+)"$`, m.assertFileExists)
 	ctx.Step(`^there should be a directory "([^"]+)"$`, m.assertDirectoryExists)
 	ctx.Step(`^there should be a file "([^"]+)" with content:`, m.assertFileContent)
+	ctx.Step(`^there should be a file "([^"]+)" with content matches:`, m.assertFileContentRegexp)
 	ctx.Step(`^(?:file|directory) "([^"]+)" permission should be ([0-9]+)$`, m.assertFilePerm)
 	ctx.Step(`^there should be only these files:`, m.assertTreeEqual)
 	ctx.Step(`^there should be these files:`, m.assertTreeContains)
@@ -75,6 +76,7 @@ func (m *Manager) RegisterContext(td TempDirer, ctx *godog.ScenarioContext) {
 	ctx.Step(`^there should be a file "([^"]+)" in "([^"]+)" (?:fs|filesystem|file system)`, m.assertFileExistsInFs)
 	ctx.Step(`^there should be a directory "([^"]+)" in "([^"]+)" (?:fs|filesystem|file system)`, m.assertDirectoryExistsInFs)
 	ctx.Step(`^there should be a file "([^"]+)" in "([^"]+)" (?:fs|filesystem|file system) with content:`, m.assertFileContentInFs)
+	ctx.Step(`^there should be a file "([^"]+)" in "([^"]+)" (?:fs|filesystem|file system) with content matches:`, m.assertFileContentRegexpInFs)
 	ctx.Step(`^(?:file|directory) "([^"]+)" permission in "([^"]+)" (?:fs|filesystem|file system) should be ([0-9]+)`, m.assertFilePermInFs)
 	ctx.Step(`^there should be only these files in "([^"]+)" (?:fs|filesystem|file system):`, m.assertTreeEqualInFs)
 	ctx.Step(`^there should be these files in "([^"]+)" (?:fs|filesystem|file system):`, m.assertTreeContainsInFs)
@@ -203,6 +205,10 @@ func (m *Manager) assertFileContent(path string, body *godog.DocString) error {
 	return m.assertFileContentInFs(path, defaultFs, body)
 }
 
+func (m *Manager) assertFileContentRegexp(path string, body *godog.DocString) error {
+	return m.assertFileContentRegexpInFs(path, defaultFs, body)
+}
+
 func (m *Manager) assertFilePerm(path string, perm string) error {
 	return m.assertFilePermInFs(path, defaultFs, perm)
 }
@@ -308,6 +314,16 @@ func (m *Manager) assertFileContentInFs(path string, fs string, body *godog.DocS
 	t := teeError()
 
 	if !aferoassert.FileContent(t, m.fs(fs), path, body.Content) {
+		return t.LastError()
+	}
+
+	return nil
+}
+
+func (m *Manager) assertFileContentRegexpInFs(path string, fs string, body *godog.DocString) error {
+	t := teeError()
+
+	if !aferoassert.FileContentRegexp(t, m.fs(fs), path, fileContentRegexp(body.Content)) {
 		return t.LastError()
 	}
 
