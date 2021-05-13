@@ -56,6 +56,7 @@ func (m *Manager) RegisterContext(td TempDirer, ctx *godog.ScenarioContext) {
 	ctx.Step(`^there is a directory "([^"]+)"$`, m.createDirectory)
 	ctx.Step(`^there is a file "([^"]+)" with content:`, m.createFileWithContent)
 	ctx.Step(`changes? "([^"]+)" permission to ([0-9]+)$`, m.chmod)
+	ctx.Step(`^(?:file|directory) "([^"]+)" permission is ([0-9]+)$`, m.chmod)
 
 	ctx.Step(`^there should be a file "([^"]+)"$`, m.assertFileExists)
 	ctx.Step(`^there should be a directory "([^"]+)"$`, m.assertDirectoryExists)
@@ -73,6 +74,7 @@ func (m *Manager) RegisterContext(td TempDirer, ctx *godog.ScenarioContext) {
 	ctx.Step(`^there is a directory "([^"]+)" in "([^"]+)" (?:fs|filesystem|file system)`, m.createDirectoryInFs)
 	ctx.Step(`^there is a file "([^"]+)" in "([^"]+)" (?:fs|filesystem|file system) with content:`, m.createFileInFsWithContent)
 	ctx.Step(`changes? "([^"]+)" permission in "([^"]+)" (?:fs|filesystem|file system) to ([0-9]+)`, m.chmodInFs)
+	ctx.Step(`^(?:file|directory) "([^"]+)" permission in "([^"]+)" (?:fs|filesystem|file system) is ([0-9]+)`, m.chmodInFs)
 
 	ctx.Step(`^there should be a file "([^"]+)" in "([^"]+)" (?:fs|filesystem|file system)`, m.assertFileExistsInFs)
 	ctx.Step(`^there should be a directory "([^"]+)" in "([^"]+)" (?:fs|filesystem|file system)`, m.assertDirectoryExistsInFs)

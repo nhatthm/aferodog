@@ -11,6 +11,7 @@ Feature: OS FS
         echo "hello"
         """
 
+        And file "test/file1.txt" permission is 0644
         And I change "test/file2.sh" permission to 0755
 
     Scenario: Basic Assertions
@@ -24,6 +25,7 @@ Feature: OS FS
         """
 
         And directory "test" permission should be 0755
+        And file "test/file1.txt" permission should be 0644
         And file "test/file2.sh" permission should be 0755
 
     Scenario: Regexp Assertions

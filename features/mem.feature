@@ -10,6 +10,7 @@ Feature: Memory FS
         echo "hello"
         """
 
+        And file "test/file1.txt" permission in "mem" fs is 0644
         And I change "test/file2.sh" permission in "mem" fs to 0755
 
     Scenario: Basic Assertions
@@ -23,6 +24,7 @@ Feature: Memory FS
         """
 
         And directory "test" permission in "mem" fs should be 0755
+        And file "test/file1.txt" permission in "mem" fs should be 0644
         And file "test/file2.sh" permission in "mem" fs should be 0755
 
     Scenario: Regexp Assertions

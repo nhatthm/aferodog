@@ -219,14 +219,20 @@ Feature: Mixed
 
 Pattern:
 
-- With the default fs: `changes? "([^"]+)" permission to ([0-9]+)$`
-- With a fs at your choice: `changes? "([^"]+)" permission in "([^"]+)" (?:fs|filesystem|file system) to ([0-9]+)`
+- With the default fs:
+    - `changes? "([^"]+)" permission to ([0-9]+)$`
+    - `^(?:file|directory) "([^"]+)" permission is ([0-9]+)$`
+- With a fs at your choice:
+    - `changes? "([^"]+)" permission in "([^"]+)" (?:fs|filesystem|file system) to ([0-9]+)`
+    - `^(?:file|directory) "([^"]+)" permission in "([^"]+)" (?:fs|filesystem|file system) is ([0-9]+)`
 
 ```gherkin
 Feature: Mixed
 
     Background:
-        Given I change "test/file2.sh" permission to 0755
+        Given file "test/file1.txt" permission is 0644
+        And file "test/file1.txt" permission in "mem" fs is 0644
+        And I change "test/file2.sh" permission to 0755
         And I change "test/file2.sh" permission in "mem" fs to 0755
 ```
 
