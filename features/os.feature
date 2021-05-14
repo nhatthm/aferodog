@@ -121,9 +121,7 @@ Feature: OS FS
         """
 
     Scenario: .github equal in path
-        When I reset current directory
-
-        Then there should be only these files in "../../.github":
+        Then there should be only these files in "$TEST_DIR/../../.github":
         """
         - workflows:
             - golangci-lint.yaml

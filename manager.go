@@ -4,9 +4,11 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync"
 
 	"github.com/cucumber/godog"
+	"github.com/cucumber/messages-go/v10"
 	"github.com/nhatthm/aferoassert"
 	"github.com/spf13/afero"
 )
@@ -26,7 +28,7 @@ type Manager struct {
 	td TempDirer
 
 	fss          map[string]afero.Fs
-	cwd          string
+	testDir      string
 	trackedFiles map[string][]string
 
 	mu sync.Mutex
@@ -43,6 +45,8 @@ func (m *Manager) RegisterContext(td TempDirer, ctx *godog.ScenarioContext) {
 		m.cleanup()
 		_ = m.resetDir() // nolint: errcheck
 	})
+
+	ctx.BeforeStep(m.expandVariables)
 
 	// Utils.
 	ctx.Step(`(?:current|working) directory is temporary`, m.chTempDir)
@@ -112,6 +116,27 @@ func (m *Manager) cleanup() {
 	m.trackedFiles = make(map[string][]string)
 }
 
+func (m *Manager) expandVariables(st *godog.Step) {
+	cwd, err := os.Getwd()
+	mustNoError(err)
+
+	replacer := strings.NewReplacer(
+		"$TEST_DIR", m.testDir,
+		"$CWD", cwd,
+		"$WORKING_DIR", cwd,
+	)
+
+	st.Text = replacer.Replace(st.Text)
+
+	if st.Argument == nil {
+		return
+	}
+
+	if msg, ok := st.Argument.Message.(*messages.PickleStepArgument_DocString); ok {
+		msg.DocString.Content = replacer.Replace(msg.DocString.Content)
+	}
+}
+
 func (m *Manager) trackPath(fs afero.Fs, path string) (string, error) {
 	parent := filepath.Dir(path)
 
@@ -173,7 +198,7 @@ func (m *Manager) chDir(dir string) error {
 }
 
 func (m *Manager) resetDir() error {
-	return m.chDir(m.cwd)
+	return m.chDir(m.testDir)
 }
 
 func (m *Manager) chmod(path, perm string) error {
@@ -385,7 +410,7 @@ func NewManager(options ...Option) *Manager {
 		fss: map[string]afero.Fs{
 			defaultFs: afero.NewOsFs(),
 		},
-		cwd:          cwd,
+		testDir:      cwd,
 		trackedFiles: make(map[string][]string),
 	}
 
