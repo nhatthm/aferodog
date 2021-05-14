@@ -405,6 +405,28 @@ Feature: Mixed
         """
 ```
 
+## Variables
+
+You can use these variables in your steps:
+
+Variable | Description
+:--- | :---
+`$TEST_DIR` | The working directory where tests start
+`$CWD` | Current working directory, get from `os.Getwd()`
+`$WOKRING_DIR` | Same as `$CWD`
+
+For examples:
+
+```gherkin
+    Scenario: .github equal in path
+        Then there should be only these files in "$TEST_DIR/../../.github":
+        """
+        - workflows:
+            - golangci-lint.yaml
+            - test.yaml
+        """
+```
+
 ## Examples
 
 Full suite: https://github.com/nhatthm/aferodog/tree/master/features
