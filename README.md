@@ -147,7 +147,7 @@ Remove a file from a fs.
 Pattern:
 
 - With the default fs: `^there is no (?:file|directory) "([^"]+)"$`
-- With a fs at your choice: `^there is no (?:file|directory) "([^"]+)" in "([^"]+)" (?:fs|filesystem|file system)`
+- With a fs at your choice: `^there is no (?:file|directory) "([^"]+)" in "([^"]+)" (?:fs|filesystem|file system)$`
 
 ```gherkin
 Feature: Mixed
@@ -164,7 +164,7 @@ Feature: Mixed
 Pattern:
 
 - With the default fs: `^there is a file "([^"]+)"$`
-- With a fs at your choice: `^there is a file "([^"]+)" in "([^"]+)" (?:fs|filesystem|file system)`
+- With a fs at your choice: `^there is a file "([^"]+)" in "([^"]+)" (?:fs|filesystem|file system)$`
 
 ```gherkin
 Feature: Mixed
@@ -256,7 +256,7 @@ Feature: Mixed
 Pattern:
 
 - With the default fs: `^there should be a directory "([^"]+)"$`
-- With a fs at your choice: `^there should be a directory "([^"]+)" in "([^"]+)" (?:fs|filesystem|file system)`
+- With a fs at your choice: `^there should be a directory "([^"]+)" in "([^"]+)" (?:fs|filesystem|file system)$`
 
 ```gherkin
 Feature: Mixed
