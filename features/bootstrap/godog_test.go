@@ -10,9 +10,10 @@ import (
 	"testing"
 
 	"github.com/cucumber/godog"
-	"github.com/nhatthm/aferodog"
 	"github.com/spf13/afero"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/nhatthm/aferodog"
 )
 
 // Used by init().

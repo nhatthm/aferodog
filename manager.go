@@ -4,12 +4,11 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"strings"
 	"sync"
 
 	"github.com/cucumber/godog"
-	"github.com/cucumber/messages-go/v10"
 	"github.com/nhatthm/aferoassert"
+	"github.com/nhatthm/expandog"
 	"github.com/spf13/afero"
 )
 
@@ -120,21 +119,11 @@ func (m *Manager) expandVariables(st *godog.Step) {
 	cwd, err := os.Getwd()
 	mustNoError(err)
 
-	replacer := strings.NewReplacer(
-		"$TEST_DIR", m.testDir,
-		"$CWD", cwd,
-		"$WORKING_DIR", cwd,
-	)
-
-	st.Text = replacer.Replace(st.Text)
-
-	if st.Argument == nil {
-		return
-	}
-
-	if msg, ok := st.Argument.Message.(*messages.PickleStepArgument_DocString); ok {
-		msg.DocString.Content = replacer.Replace(msg.DocString.Content)
-	}
+	expandog.ExpandStep(st, expandog.Pairs{
+		"TEST_DIR":    m.testDir,
+		"CWD":         cwd,
+		"WORKING_DIR": cwd,
+	})
 }
 
 func (m *Manager) trackPath(fs afero.Fs, path string) (string, error) {
