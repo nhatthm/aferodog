@@ -33,8 +33,25 @@ type Manager struct {
 	mu sync.Mutex
 }
 
+func (m *Manager) registerExpander(ctx *godog.ScenarioContext) {
+	expandog.NewStepExpander(
+		func() expandog.Pairs {
+			cwd, err := os.Getwd()
+			mustNoError(err)
+
+			return expandog.Pairs{
+				"TEST_DIR":    m.testDir,
+				"CWD":         cwd,
+				"WORKING_DIR": cwd,
+			}
+		},
+	).RegisterExpander(ctx)
+}
+
 // RegisterContext registers all the steps.
 func (m *Manager) RegisterContext(td TempDirer, ctx *godog.ScenarioContext) {
+	m.registerExpander(ctx)
+
 	ctx.BeforeScenario(func(*godog.Scenario) {
 		m.WithTempDirer(td)
 		_ = m.resetDir() // nolint: errcheck
@@ -44,8 +61,6 @@ func (m *Manager) RegisterContext(td TempDirer, ctx *godog.ScenarioContext) {
 		m.cleanup()
 		_ = m.resetDir() // nolint: errcheck
 	})
-
-	ctx.BeforeStep(m.expandVariables)
 
 	// Utils.
 	ctx.Step(`(?:current|working) directory is temporary`, m.chTempDir)
@@ -113,17 +128,6 @@ func (m *Manager) cleanup() {
 	defer m.mu.Unlock()
 
 	m.trackedFiles = make(map[string][]string)
-}
-
-func (m *Manager) expandVariables(st *godog.Step) {
-	cwd, err := os.Getwd()
-	mustNoError(err)
-
-	expandog.ExpandStep(st, expandog.Pairs{
-		"TEST_DIR":    m.testDir,
-		"CWD":         cwd,
-		"WORKING_DIR": cwd,
-	})
 }
 
 func (m *Manager) trackPath(fs afero.Fs, path string) (string, error) {

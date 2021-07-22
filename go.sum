@@ -163,6 +163,8 @@ github.com/nhatthm/expandog v0.2.0 h1:GDj8k9WhKhMsviq7GME+TKUc0N1f35Ai2CkWiKIv1x
 github.com/nhatthm/expandog v0.2.0/go.mod h1:aDOzq5PpWfmfCiC0s0GKfseJWnnD/1ZaR+/3iu90bCA=
 github.com/nhatthm/expandog v0.3.0 h1:UdmkcDhBj5BSoLUJh4yl6NeVamH7lB7jStcDfJYjc4M=
 github.com/nhatthm/expandog v0.3.0/go.mod h1:vwXy23uUXn/30Jm7qpkO/nnotyHrLBtFbB6iQPtlmsY=
+github.com/nhatthm/expandog v0.4.0 h1:Rix9RueKC51Lye2WOoTqsgonQM9lnlxlEz2cDV4aogk=
+github.com/nhatthm/expandog v0.4.0/go.mod h1:vwXy23uUXn/30Jm7qpkO/nnotyHrLBtFbB6iQPtlmsY=
 github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e/go.mod h1:zD1mROLANZcx1PVRCS0qkT7pwLkGfwJo4zjcN/Tysno=
 github.com/oklog/ulid v1.3.1/go.mod h1:CirwcVhetQ6Lv90oh/F+FBtV6XMibvdAFo93nm5qn4U=
 github.com/pascaldekloe/goe v0.0.0-20180627143212-57f6aae5913c/go.mod h1:lzWF7FIEvWOWxwDKqyGYQf6ZUaNfKdP144TG7ZOy1lc=
