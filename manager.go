@@ -1,6 +1,7 @@
 package aferodog
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -52,14 +53,18 @@ func (m *Manager) registerExpander(ctx *godog.ScenarioContext) {
 func (m *Manager) RegisterContext(td TempDirer, ctx *godog.ScenarioContext) {
 	m.registerExpander(ctx)
 
-	ctx.BeforeScenario(func(*godog.Scenario) {
+	ctx.Before(func(context.Context, *godog.Scenario) (context.Context, error) {
 		m.WithTempDirer(td)
 		_ = m.resetDir() // nolint: errcheck
+
+		return nil, nil
 	})
 
-	ctx.AfterScenario(func(*godog.Scenario, error) {
+	ctx.After(func(context.Context, *godog.Scenario, error) (context.Context, error) {
 		m.cleanup()
 		_ = m.resetDir() // nolint: errcheck
+
+		return nil, nil
 	})
 
 	// Utils.
@@ -274,7 +279,7 @@ func (m *Manager) createDirectoryInFs(path, fs string) error {
 
 	path = filepath.Clean(path)
 
-	if err := m.fs(fs).MkdirAll(path, 0755); err != nil {
+	if err := m.fs(fs).MkdirAll(path, 0o755); err != nil {
 		return fmt.Errorf("could not mkdir %q: %w", path, err)
 	}
 
@@ -289,7 +294,7 @@ func (m *Manager) createFileInFsWithContent(path, fsID string, body *godog.DocSt
 	fs := m.fs(fsID)
 	parent := filepath.Dir(path)
 
-	if err := fs.MkdirAll(parent, 0755); err != nil {
+	if err := fs.MkdirAll(parent, 0o755); err != nil {
 		return fmt.Errorf("could not mkdir %q: %w", parent, err)
 	}
 

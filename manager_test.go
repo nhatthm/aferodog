@@ -120,7 +120,7 @@ func TestManager_Chmod(t *testing.T) {
 		{
 			scenario: "success",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
-				fs.On("Chmod", "unknown", os.FileMode(0755)).
+				fs.On("Chmod", "unknown", os.FileMode(0o755)).
 					Return(nil)
 			}),
 			path: "unknown",
@@ -208,7 +208,7 @@ func TestManager_CreateFile(t *testing.T) {
 				fs.On("Stat", "level1").
 					Return(nil, os.ErrNotExist)
 
-				fs.On("MkdirAll", "level1/level2", os.FileMode(0755)).
+				fs.On("MkdirAll", "level1/level2", os.FileMode(0o755)).
 					Return(errors.New("mkdir error"))
 			}),
 			expectedError: "could not mkdir \"level1/level2\": mkdir error",
@@ -219,7 +219,7 @@ func TestManager_CreateFile(t *testing.T) {
 				fs.On("Stat", "level1").
 					Return(nil, os.ErrNotExist)
 
-				fs.On("MkdirAll", "level1/level2", os.FileMode(0755)).
+				fs.On("MkdirAll", "level1/level2", os.FileMode(0o755)).
 					Return(nil)
 
 				fs.On("Create", "level1/level2/file.txt").
@@ -233,7 +233,7 @@ func TestManager_CreateFile(t *testing.T) {
 				fs.On("Stat", "level1").
 					Return(nil, os.ErrNotExist)
 
-				fs.On("MkdirAll", "level1/level2", os.FileMode(0755)).
+				fs.On("MkdirAll", "level1/level2", os.FileMode(0o755)).
 					Return(nil)
 
 				fs.On("Create", "level1/level2/file.txt").
@@ -281,7 +281,7 @@ func TestManager_CreateFileWithContent(t *testing.T) {
 				fs.On("Stat", "level1").
 					Return(nil, os.ErrNotExist)
 
-				fs.On("MkdirAll", "level1/level2", os.FileMode(0755)).
+				fs.On("MkdirAll", "level1/level2", os.FileMode(0o755)).
 					Return(errors.New("mkdir error"))
 			}),
 			expectedError: "could not mkdir \"level1/level2\": mkdir error",
@@ -292,7 +292,7 @@ func TestManager_CreateFileWithContent(t *testing.T) {
 				fs.On("Stat", "level1").
 					Return(nil, os.ErrNotExist)
 
-				fs.On("MkdirAll", "level1/level2", os.FileMode(0755)).
+				fs.On("MkdirAll", "level1/level2", os.FileMode(0o755)).
 					Return(nil)
 
 				fs.On("Create", "level1/level2/file.txt").
@@ -306,7 +306,7 @@ func TestManager_CreateFileWithContent(t *testing.T) {
 				fs.On("Stat", "level1").
 					Return(nil, os.ErrNotExist)
 
-				fs.On("MkdirAll", "level1/level2", os.FileMode(0755)).
+				fs.On("MkdirAll", "level1/level2", os.FileMode(0o755)).
 					Return(nil)
 
 				f := mem.NewFileHandle(mem.CreateFile("file.txt"))
@@ -323,7 +323,7 @@ func TestManager_CreateFileWithContent(t *testing.T) {
 				fs.On("Stat", "level1").
 					Return(nil, os.ErrNotExist)
 
-				fs.On("MkdirAll", "level1/level2", os.FileMode(0755)).
+				fs.On("MkdirAll", "level1/level2", os.FileMode(0o755)).
 					Return(nil)
 
 				f := mem.NewFileHandle(mem.CreateFile("file.txt"))
@@ -379,7 +379,7 @@ func TestManager_CreateDirectory(t *testing.T) {
 				fs.On("Stat", "level1/level2/level3").
 					Return(nil, os.ErrNotExist)
 
-				fs.On("MkdirAll", "level1/level2/level3", os.FileMode(0755)).
+				fs.On("MkdirAll", "level1/level2/level3", os.FileMode(0o755)).
 					Return(errors.New("mkdir error"))
 			}),
 			expectedError: "could not mkdir \"level1/level2/level3\": mkdir error",
@@ -390,7 +390,7 @@ func TestManager_CreateDirectory(t *testing.T) {
 				fs.On("Stat", "level1").
 					Return(nil, os.ErrNotExist)
 
-				fs.On("MkdirAll", "level1/level2/level3", os.FileMode(0755)).
+				fs.On("MkdirAll", "level1/level2/level3", os.FileMode(0o755)).
 					Return(nil)
 			}),
 		},
@@ -700,7 +700,7 @@ func TestManager_AssertFilePerm(t *testing.T) {
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "level1/file.txt").
 					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("Mode").Return(os.FileMode(0644))
+						i.On("Mode").Return(os.FileMode(0o644))
 					}), nil)
 			}),
 			perm:          "0755",
@@ -711,7 +711,7 @@ func TestManager_AssertFilePerm(t *testing.T) {
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "level1/file.txt").
 					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("Mode").Return(os.FileMode(0755))
+						i.On("Mode").Return(os.FileMode(0o755))
 					}), nil)
 			}),
 			perm: "0755",

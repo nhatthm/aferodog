@@ -11,7 +11,7 @@ Interacting with multiple filesystems in [`cucumber/godog`](https://github.com/c
 
 ## Prerequisites
 
-- `Go >= 1.15`
+- `Go >= 1.16`
 
 ## Install
 
