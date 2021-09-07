@@ -8,8 +8,8 @@ import (
 	"sync"
 
 	"github.com/cucumber/godog"
+	"github.com/godogx/expandvars"
 	"github.com/nhatthm/aferoassert"
-	"github.com/nhatthm/expandog"
 	"github.com/spf13/afero"
 )
 
@@ -35,12 +35,12 @@ type Manager struct {
 }
 
 func (m *Manager) registerExpander(ctx *godog.ScenarioContext) {
-	expandog.NewStepExpander(
-		func() expandog.Pairs {
+	expandvars.NewStepExpander(
+		func() expandvars.Pairs {
 			cwd, err := os.Getwd()
 			mustNoError(err)
 
-			return expandog.Pairs{
+			return expandvars.Pairs{
 				"TEST_DIR":    m.testDir,
 				"CWD":         cwd,
 				"WORKING_DIR": cwd,
