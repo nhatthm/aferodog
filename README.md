@@ -1,7 +1,10 @@
+> ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
+>
+> This module is deprecated. Use `github.com/godogx/aferosteps` instead.
+
 # Afero Cucumber Steps for Golang
 
 [![GitHub Releases](https://img.shields.io/github/v/release/nhatthm/aferodog)](https://github.com/nhatthm/aferodog/releases/latest)
-[![Build Status](https://github.com/nhatthm/aferodog/actions/workflows/test.yaml/badge.svg)](https://github.com/nhatthm/aferodog/actions/workflows/test.yaml)
 [![codecov](https://codecov.io/gh/nhatthm/aferodog/branch/master/graph/badge.svg?token=eTdAgDE2vR)](https://codecov.io/gh/nhatthm/aferodog)
 [![Go Report Card](https://goreportcard.com/badge/github.com/nhatthm/aferodog)](https://goreportcard.com/report/github.com/nhatthm/aferodog)
 [![GoDevDoc](https://img.shields.io/badge/dev-doc-00ADD8?logo=go)](https://pkg.go.dev/github.com/nhatthm/aferodog)

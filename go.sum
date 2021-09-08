@@ -53,6 +53,8 @@ github.com/go-kit/kit v0.8.0/go.mod h1:xBxKIO96dXMWWy0MnWVtmwkA9/13aqxPnvrjFYMA2
 github.com/go-logfmt/logfmt v0.3.0/go.mod h1:Qt1PoO58o5twSAckw1HlFXLmHsOX5/0LbT9GBnD5lWE=
 github.com/go-logfmt/logfmt v0.4.0/go.mod h1:3RMwSq7FuexP4Kalkev3ejPJsZTpXXBr9+V4qmtdjCk=
 github.com/go-stack/stack v1.8.0/go.mod h1:v0f6uXyyMGvRgIKkXu+yp6POWl0qKG85gN/melR3HDY=
+github.com/godogx/aferosteps v0.1.0 h1:HPRSE4pxEq2zIecEXDvj/A86dJmooNjtVJNsssRoOQk=
+github.com/godogx/aferosteps v0.1.0/go.mod h1:n8rI4v6xvLScsCj6to+B80Zw1BoXqMA0Vchqu+3L6Js=
 github.com/godogx/expandvars v0.1.0 h1:msk+LqBDgtckUIwn37mhE4e+k7n+44wZZN8BpFTYWMI=
 github.com/godogx/expandvars v0.1.0/go.mod h1:50+yWZ9Z9ueaisxOQz4AwaLjzf0XwdcEHYcIB/JYdrc=
 github.com/gofrs/uuid v4.0.0+incompatible h1:1SD/1F5pU8p29ybwgQSwpQk+mwdRrXCYuPhW6m+TnJw=
